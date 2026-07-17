@@ -1,0 +1,11 @@
+{
+  "questionnaire_items": 8,
+  "evidence_linked_drafts": 4,
+  "held_for_review": 4,
+  "evidence_files_hashed_and_matched": 4,
+  "answer_library_rows": 4,
+  "xlsx_content": "validated",
+  "docx_content": "validated",
+  "synthetic_only": true,
+  "result": "PASS"
+}

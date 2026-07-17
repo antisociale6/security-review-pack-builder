@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Reuse approved security answers across SaaS clients, catch unsupported claims, and export local Excel and Word review packs.">
+  <title>Security Review Pack Builder | Local MSP Security Review Pilot</title>
+  <link rel="canonical" href="https://antisociale6.github.io/security-review-pack-builder/">
+  <meta property="og:title" content="Security Review Pack Builder">
+  <meta property="og:description" content="A local-first security questionnaire workflow for MSPs and vCISOs, with a free synthetic sample and pilot.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://antisociale6.github.io/security-review-pack-builder/">
+  <style>
+    :root {
+      --ink: #12212f;
+      --muted: #5a6976;
+      --paper: #f4f7f5;
+      --panel: #ffffff;
+      --line: #d7e0dc;
+      --navy: #0c2634;
+      --teal: #0c796b;
+      --teal-dark: #075b51;
+      --mint: #dff4ec;
+      --amber: #b66a13;
+      --amber-soft: #fff3df;
+      --shadow: 0 20px 55px rgba(12, 38, 52, 0.11);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 85% 0%, rgba(12, 121, 107, 0.12), transparent 26rem),
+        var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    a { color: inherit; }
+    .wrap { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .skip-link { position: absolute; left: -999px; top: 8px; }
+    .skip-link:focus { left: 8px; z-index: 10; padding: 10px 14px; background: white; }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      border-bottom: 1px solid rgba(215, 224, 220, 0.85);
+      background: rgba(244, 247, 245, 0.9);
+      backdrop-filter: blur(16px);
+    }
+
+    nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 800; text-decoration: none; }
+    .brand-mark { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 11px; color: white; background: var(--teal); }
+    .nav-links { display: flex; gap: 22px; align-items: center; color: var(--muted); font-size: 0.94rem; }
+    .nav-links a { text-decoration: none; }
+    .nav-links a:hover { color: var(--ink); }
+
+    .hero { padding: 88px 0 66px; }
+    .hero-grid { display: grid; grid-template-columns: 1.08fr 0.92fr; align-items: center; gap: 60px; }
+    .eyebrow { margin: 0 0 18px; color: var(--teal-dark); font-size: 0.78rem; font-weight: 850; letter-spacing: 0.13em; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 760px; font-family: Georgia, "Times New Roman", serif; font-size: clamp(2.7rem, 6vw, 5.1rem); line-height: 0.99; letter-spacing: -0.045em; }
+    .hero-copy { max-width: 690px; margin: 25px 0 0; color: var(--muted); font-size: 1.18rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 19px; border: 1px solid var(--navy); border-radius: 13px; font-weight: 760; text-decoration: none; }
+    .button.primary { color: white; background: var(--navy); }
+    .button.secondary { background: transparent; }
+    .button:hover { transform: translateY(-1px); }
+    .chips { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 24px; }
+    .chip { padding: 7px 10px; border: 1px solid #c6d8d1; border-radius: 999px; color: var(--teal-dark); background: rgba(255,255,255,0.63); font-size: 0.84rem; font-weight: 700; }
+
+    .status-card { position: relative; overflow: hidden; padding: 30px; border: 1px solid #bfd1ca; border-radius: 28px; background: rgba(255,255,255,0.86); box-shadow: var(--shadow); }
+    .status-card::before { content: ""; position: absolute; width: 190px; height: 190px; right: -72px; top: -85px; border-radius: 50%; background: var(--mint); }
+    .status-label { position: relative; display: inline-block; padding: 6px 9px; border-radius: 8px; color: var(--amber); background: var(--amber-soft); font-size: 0.76rem; font-weight: 850; text-transform: uppercase; letter-spacing: 0.08em; }
+    .status-card h2 { position: relative; margin: 24px 0 10px; font-size: 1.9rem; }
+    .price { position: relative; margin: 22px 0 3px; font-family: Georgia, serif; font-size: 2.25rem; font-weight: 700; }
+    .status-card p { position: relative; color: var(--muted); }
+    .approval { position: relative; margin-top: 21px; padding: 15px; border-left: 4px solid var(--amber); background: var(--amber-soft); font-size: 0.9rem; }
+
+    section { padding: 70px 0; }
+    .section-head { max-width: 720px; margin-bottom: 34px; }
+    .section-head h2 { margin: 0 0 13px; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.3rem); line-height: 1.08; letter-spacing: -0.025em; }
+    .section-head p { margin: 0; color: var(--muted); font-size: 1.06rem; }
+
+    .three-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .card { padding: 25px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); }
+    .card-number { width: 36px; height: 36px; display: grid; place-items: center; margin-bottom: 22px; border-radius: 11px; color: white; background: var(--teal); font-weight: 850; }
+    .card h3 { margin: 0 0 9px; font-size: 1.05rem; }
+    .card p { margin: 0; color: var(--muted); }
+
+    .preview-shell { overflow: hidden; border: 1px solid #b9cac4; border-radius: 28px; background: var(--panel); box-shadow: var(--shadow); }
+    .preview-top { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 17px 21px; border-bottom: 1px solid var(--line); background: #f9fbfa; }
+    .dots { display: flex; gap: 7px; }
+    .dots span { width: 9px; height: 9px; border-radius: 50%; background: #bfcbc6; }
+    .preview-top strong { font-size: 0.9rem; }
+    .preview-body { padding: 26px; }
+    .proof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .proof-shot { overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: white; }
+    .proof-shot img { display: block; width: 100%; height: auto; }
+    .proof-shot figcaption { padding: 13px 15px; color: var(--muted); font-size: 0.88rem; }
+    .question { margin-bottom: 18px; padding: 18px; border-radius: 16px; background: #f2f7f5; }
+    .question small { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 800; }
+    .question p { margin: 7px 0 0; font-weight: 720; }
+    .answer-grid { display: grid; grid-template-columns: 1fr 210px; gap: 18px; }
+    .draft { padding: 20px; border: 1px solid var(--line); border-radius: 16px; }
+    .draft p { margin: 7px 0 0; }
+    .meta { display: grid; gap: 10px; }
+    .meta-row { padding: 13px; border-radius: 13px; background: var(--mint); font-size: 0.87rem; }
+    .meta-row.gap { color: #7a4304; background: var(--amber-soft); }
+    code { font-family: "SFMono-Regular", Consolas, monospace; }
+
+    .artifact-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .artifact { padding: 22px; border-top: 4px solid var(--teal); border-radius: 6px 6px 18px 18px; background: white; box-shadow: 0 8px 25px rgba(12,38,52,0.06); }
+    .artifact code { display: block; margin-bottom: 10px; color: var(--teal-dark); font-size: 0.82rem; font-weight: 700; }
+    .artifact h3 { margin: 0 0 7px; font-size: 1rem; }
+    .artifact p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+
+    .calculator { display: grid; grid-template-columns: 1fr 0.9fr; gap: 24px; padding: 30px; border: 1px solid #bfd1ca; border-radius: 24px; background: white; box-shadow: var(--shadow); }
+    .field-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    label { display: grid; gap: 7px; color: var(--muted); font-size: 0.87rem; font-weight: 700; }
+    input { width: 100%; min-height: 46px; padding: 9px 11px; border: 1px solid #b9cac4; border-radius: 10px; color: var(--ink); background: white; font: inherit; }
+    .result { display: grid; align-content: center; padding: 24px; border-radius: 18px; color: white; background: var(--navy); }
+    .result strong { display: block; margin: 4px 0; font-family: Georgia, serif; font-size: 2rem; }
+    .result p { margin: 5px 0 0; color: #c9d9df; font-size: 0.9rem; }
+
+    .boundary { color: white; background: var(--navy); }
+    .boundary .section-head p { color: #b9cbd4; }
+    .boundary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .boundary-card { padding: 26px; border: 1px solid rgba(255,255,255,0.16); border-radius: var(--radius); background: rgba(255,255,255,0.055); }
+    .boundary-card h3 { margin-top: 0; }
+    .clean-list { margin: 0; padding: 0; list-style: none; }
+    .clean-list li { position: relative; margin: 12px 0; padding-left: 25px; color: #d9e5ea; }
+    .clean-list li::before { content: "✓"; position: absolute; left: 0; color: #68d7c1; font-weight: 900; }
+    .clean-list.no li::before { content: "×"; color: #f0b35f; }
+
+    .sources { display: grid; gap: 10px; }
+    .source { display: flex; justify-content: space-between; gap: 20px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 14px; background: white; text-decoration: none; }
+    .source span { color: var(--muted); }
+    .source:hover { border-color: var(--teal); }
+
+    .final-card { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 35px; padding: 36px; border: 1px solid #bfd1ca; border-radius: 28px; background: white; box-shadow: var(--shadow); }
+    .final-card h2 { margin: 0 0 10px; font-family: Georgia, serif; font-size: 2rem; }
+    .final-card p { max-width: 680px; margin: 0; color: var(--muted); }
+    .not-for-sale { min-width: 235px; padding: 19px; border-radius: 16px; text-align: center; color: #73410a; background: var(--amber-soft); font-weight: 800; }
+    .privacy-note { margin-top: 15px; color: var(--muted); font-size: 0.84rem; }
+
+    footer { padding: 36px 0 54px; color: var(--muted); font-size: 0.88rem; }
+    .footer-row { display: flex; justify-content: space-between; gap: 24px; border-top: 1px solid var(--line); padding-top: 26px; }
+
+    @media (max-width: 860px) {
+      .hero-grid, .answer-grid, .boundary-grid, .final-card, .calculator { grid-template-columns: 1fr; }
+      .three-grid, .artifact-grid, .proof-grid { grid-template-columns: 1fr 1fr; }
+      .hero { padding-top: 60px; }
+      .nav-links a:not(:last-child) { display: none; }
+      .not-for-sale { min-width: 0; }
+    }
+
+    @media (max-width: 580px) {
+      .wrap { width: min(100% - 24px, 1160px); }
+      .three-grid, .artifact-grid, .proof-grid, .field-grid { grid-template-columns: 1fr; }
+      .hero { padding-top: 45px; }
+      section { padding: 54px 0; }
+      h1 { font-size: 2.65rem; }
+      .status-card, .preview-body, .final-card { padding: 22px; }
+      .preview-top { align-items: flex-start; }
+      .source, .footer-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header>
+    <div class="wrap">
+      <nav aria-label="Primary navigation">
+        <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">S</span><span>Security Review Pack Builder</span></a>
+        <div class="nav-links">
+          <a href="#workflow">Workflow</a>
+          <a href="#preview">Pack preview</a>
+          <a href="#boundary">Boundaries</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="wrap hero-grid">
+        <div>
+          <p class="eyebrow">Local-first review preparation for MSPs and vCISOs</p>
+          <h1>Stop rebuilding the same security answers for every SaaS client.</h1>
+          <p class="hero-copy">Reuse approved wording, catch stale or conflicting support before delivery, and hand each client an editable Excel and Word review pack—without uploading their evidence to a hosted AI service.</p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/antisociale6/security-review-pack-builder/issues/new?template=pilot-request.yml">Request a free pilot</a>
+            <a class="button secondary" href="sample/Northstar-Security-Review-Pack.xlsx" download>Download the real sample</a>
+          </div>
+          <p class="privacy-note">Pilot requests are public GitHub Issues. Do not include client names, questionnaires, security evidence, credentials, or personal data.</p>
+          <div class="chips" aria-label="Product characteristics">
+            <span class="chip">Runs locally</span>
+            <span class="chip">Source-bound drafts</span>
+            <span class="chip">Visible gaps</span>
+            <span class="chip">No compliance claims</span>
+          </div>
+        </div>
+
+        <aside class="status-card" aria-label="Preview status">
+          <span class="status-label">Free pilot proof</span>
+          <h2>One repeatable client workflow, not another GRC dashboard.</h2>
+          <p>For MSPs and vCISOs handling at least two questionnaires a month. One business, three operators, unlimited local client folders is the entitlement hypothesis to test.</p>
+          <p class="price">€499 <small>/ 12 months</small></p>
+          <p>Pricing hypothesis only. This page does not sell or process anything.</p>
+          <div class="approval"><strong>No checkout is enabled.</strong><br>Any product-price, payment-provider, account, or checkout change requires explicit owner approval.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">A controlled workflow</p>
+          <h2>Reuse approved work. Refuse unsupported claims.</h2>
+          <p>The builder organises what the client has explicitly approved and separates anything stale, contradictory, or missing before delivery.</p>
+        </div>
+        <div class="three-grid">
+          <article class="card"><div class="card-number">1</div><h3>Bring structured inputs</h3><p>Load a JSON claim profile, CSV questionnaire, and UTF-8 Markdown evidence records on the local machine. PDF, Word, and image extraction is not yet supported.</p></article>
+          <article class="card"><div class="card-number">2</div><h3>Bind claims to support</h3><p>Match draft language to stable fact and evidence IDs. Contradictions and stale material are separated.</p></article>
+          <article class="card"><div class="card-number">3</div><h3>Hand off editable files</h3><p>Deliver an Excel review workbook, Word security overview, cited answer library, evidence index, gap register, and hashes.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="preview">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Generated proof, not a mock-up</p>
+          <h2>See what the current build actually produces.</h2>
+          <p>These screenshots and downloads come from the checked-in synthetic Northstar run. It contains four approved answers and four deliberately held items; it makes no claim about a real company.</p>
+        </div>
+
+        <div class="preview-shell" aria-label="Generated synthetic review pack">
+          <div class="preview-top"><div class="dots" aria-hidden="true"><span></span><span></span><span></span></div><strong>Northstar synthetic build · validated 8 / 4 / 4 split</strong></div>
+          <div class="preview-body">
+            <div class="proof-grid">
+              <figure class="proof-shot"><img src="sample/overview.png" alt="Generated workbook overview showing eight questionnaire items, four approved drafts, and four held items"><figcaption>Workbook overview: 8 questions, 4 approved drafts, 4 held for review.</figcaption></figure>
+              <figure class="proof-shot"><img src="sample/gap_register.png" alt="Generated gap register showing conflicting and unsupported claims"><figcaption>Gap register: conflicts and unsupported claims stay out of the draft.</figcaption></figure>
+            </div>
+            <div class="actions">
+              <a class="button primary" href="sample/Northstar-Security-Review-Pack.xlsx" download>Download XLSX sample</a>
+              <a class="button secondary" href="sample/Northstar-Security-Overview.docx" download>Download DOCX sample</a>
+              <a class="button secondary" href="sample/validation.json">Read validation result</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Pack contents</p>
+          <h2>Useful files, readable outside the tool.</h2>
+          <p>Buyer-facing Excel and Word files sit beside deterministic open-format engine outputs.</p>
+        </div>
+        <div class="artifact-grid">
+          <article class="artifact"><code>review-pack.xlsx</code><h3>Editable review workbook</h3><p>Overview, drafts, answer library, evidence index, and gap register.</p></article>
+          <article class="artifact"><code>security-overview.docx</code><h3>Client-ready overview</h3><p>A concise Word draft constrained to approved material.</p></article>
+          <article class="artifact"><code>approved_answer_library.csv</code><h3>Answer library</h3><p>Reusable wording tied to evidence owners and validity dates.</p></article>
+          <article class="artifact"><code>evidence_index.csv</code><h3>Evidence index</h3><p>A searchable record of supplied support and provenance.</p></article>
+          <article class="artifact"><code>unsupported_and_conflicting_claims.csv</code><h3>Gap register</h3><p>Missing, stale, ambiguous, and contradictory support.</p></article>
+          <article class="artifact"><code>evidence_manifest.json</code><h3>Evidence manifest</h3><p>Current source hashes and provenance for repeatable review runs.</p></article>
+          <article class="artifact"><code>questionnaire_draft.csv</code><h3>Cited machine output</h3><p>Formula-safe CSV rows linked to explicit evidence IDs.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="value">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Use your own numbers</p>
+          <h2>Is €499 small compared with the work you already do?</h2>
+          <p>This calculator estimates current handling cost only. It does not assume or promise any time saving.</p>
+        </div>
+        <div class="calculator">
+          <div class="field-grid">
+            <label>Questionnaires per month<input id="reviews" type="number" min="0" step="1" value="2"></label>
+            <label>Hours per questionnaire<input id="hours" type="number" min="0" step="0.5" value="6"></label>
+            <label>Internal hourly cost (€)<input id="rate" type="number" min="1" step="1" value="80"></label>
+          </div>
+          <div class="result" aria-live="polite">
+            <span>Estimated current handling cost</span>
+            <strong id="annual-cost">€11,520 / year</strong>
+            <span id="break-even">€499 equals 6.24 staff hours at this rate.</span>
+            <p>Only a permissioned real-workflow pilot can measure actual savings.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="boundary" id="boundary">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Non-negotiable boundaries</p>
+          <h2>Preparation support—not automated assurance.</h2>
+          <p>Trust comes from showing uncertainty, not hiding it behind fluent text.</p>
+        </div>
+        <div class="boundary-grid">
+          <article class="boundary-card"><h3>What it is designed to do</h3><ul class="clean-list"><li>Keep sensitive review material local</li><li>Reuse customer-approved wording consistently</li><li>Cite facts and evidence beside each draft</li><li>Expose unsupported and conflicting claims</li><li>Record exact source hashes for later comparison</li></ul></article>
+          <article class="boundary-card"><h3>What it will not do</h3><ul class="clean-list no"><li>Invent controls, certifications, or operating history</li><li>Treat a policy document as proof of effectiveness</li><li>Guarantee compliance, acceptance, or sales outcomes</li><li>Give legal advice or submit responses unattended</li><li>Upload evidence or add hidden telemetry</li></ul></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sources">
+      <div class="wrap">
+        <div class="section-head">
+          <p class="eyebrow">Reference basis</p>
+          <h2>Built around evidence-led public guidance.</h2>
+          <p>These sources inform the product's structure. They do not endorse this product or prove that using it creates compliance.</p>
+        </div>
+        <div class="sources">
+          <a class="source" href="https://www.ncsc.gov.uk/guidance/supplier-assurance-questions"><strong>NCSC supplier assurance questions</strong><span>Question areas and proportional evidence</span></a>
+          <a class="source" href="https://www.ncsc.gov.uk/blog-post/supplier-assurance-having-confidence-in-your-suppliers"><strong>NCSC supplier assurance guidance</strong><span>Evidence depth and the limits of box ticking</span></a>
+          <a class="source" href="https://www.ncsc.gov.uk/collection/cloud/the-cloud-security-principles"><strong>NCSC Cloud Security Principles</strong><span>SaaS assertions, responsibilities, and evidence</span></a>
+          <a class="source" href="https://www.ncsc.gov.uk/section/software-security-code-of-practice/software-customers"><strong>NCSC guidance for software customers</strong><span>Cross-checking vendor claims over time</span></a>
+          <a class="source" href="https://digital-strategy.ec.europa.eu/en/library/nis2-commission-implementing-regulation-critical-entities-and-networks"><strong>EU NIS2 implementing requirements</strong><span>Current requirements affecting MSPs and MSSPs</span></a>
+          <a class="source" href="https://www.conveyor.com/pricing"><strong>Conveyor pricing</strong><span>Category budget anchor; Business starts at $9,600/year</span></a>
+          <a class="source" href="https://responsehub.ai/responsehub-for-mssps/"><strong>ResponseHub for MSSPs</strong><span>Service-provider category evidence; $1,000 paid pilot</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap">
+        <div class="final-card">
+          <div><h2>Test the real sample before payment exists.</h2><p>The software proof is downloadable now. The €499 commercial hypothesis targets ten sales per month, but payment remains disabled until qualified pilots validate demand and the owner explicitly approves checkout.</p></div>
+          <div>
+            <a class="button primary" href="https://github.com/antisociale6/security-review-pack-builder/issues/new?template=pilot-request.yml">Request free pilot</a>
+            <p class="privacy-note">Public intake; non-sensitive business ranges only.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap footer-row"><span>Security Review Pack Builder · free pilot</span><span>No tracking · no checkout · no compliance guarantee</span></div>
+  </footer>
+  <script>
+    const reviews = document.getElementById("reviews");
+    const hours = document.getElementById("hours");
+    const rate = document.getElementById("rate");
+    const annualCost = document.getElementById("annual-cost");
+    const breakEven = document.getElementById("break-even");
+
+    function updateCalculator() {
+      const reviewCount = Math.max(0, Number(reviews.value) || 0);
+      const hoursPerReview = Math.max(0, Number(hours.value) || 0);
+      const hourlyRate = Math.max(1, Number(rate.value) || 1);
+      const yearlyCost = reviewCount * hoursPerReview * hourlyRate * 12;
+      annualCost.textContent = `${yearlyCost.toLocaleString("en-IE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 })} / year`;
+      breakEven.textContent = `€499 equals ${(499 / hourlyRate).toFixed(2)} staff hours at this rate.`;
+    }
+
+    for (const input of [reviews, hours, rate]) input.addEventListener("input", updateCalculator);
+    updateCalculator();
+  </script>
+</body>
+</html>

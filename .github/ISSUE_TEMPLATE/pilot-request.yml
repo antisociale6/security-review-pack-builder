@@ -1,0 +1,93 @@
+name: Free pilot request
+description: Request a local Security Review Pack Builder pilot using non-sensitive business ranges only.
+title: "[Pilot] "
+labels:
+  - pilot-request
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing the free pilot. This issue is public.
+
+        Do not include client names, questionnaires, policies, reports, screenshots, evidence, credentials, personal data, or vulnerability details. Your GitHub username is enough for follow-up.
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Your role
+      options:
+        - MSP owner or operator
+        - Independent vCISO
+        - Security consultant
+        - Internal security or compliance lead
+        - Other B2B role
+    validations:
+      required: true
+
+  - type: dropdown
+    id: client_count
+    attributes:
+      label: Approximate number of SaaS clients supported
+      description: Select a range only; do not name clients.
+      options:
+        - 1-4
+        - 5-10
+        - 11-25
+        - 26-50
+        - More than 50
+        - Not applicable
+    validations:
+      required: true
+
+  - type: dropdown
+    id: questionnaire_volume
+    attributes:
+      label: Security questionnaires handled per quarter
+      options:
+        - 0-1
+        - 2-4
+        - 5-10
+        - 11-20
+        - More than 20
+    validations:
+      required: true
+
+  - type: dropdown
+    id: time_per_review
+    attributes:
+      label: Typical staff time per questionnaire
+      options:
+        - Under 2 hours
+        - 2-5 hours
+        - 6-10 hours
+        - 11-20 hours
+        - More than 20 hours
+        - Not currently measured
+    validations:
+      required: true
+
+  - type: dropdown
+    id: local_requirement
+    attributes:
+      label: How important is local processing?
+      options:
+        - Required - evidence cannot be uploaded to hosted AI
+        - Strong preference
+        - Useful but not required
+        - Not important
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmations
+    attributes:
+      label: Pilot confirmations
+      options:
+        - label: I will keep all real questionnaire and evidence content on my own machine.
+          required: true
+        - label: I will not post confidential, security-sensitive, or personal data in this issue.
+          required: true
+        - label: I understand the output is a draft, not compliance certification or legal advice.
+          required: true
+        - label: I am willing to report aggregate setup time, review time, and whether I would pay €499 for 12 months.
+          required: true

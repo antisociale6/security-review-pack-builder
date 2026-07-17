@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Read the pilot safety boundary
+    url: https://antisociale6.github.io/security-review-pack-builder/#boundary
+    about: Review what the pilot does, does not do, and what must never be posted publicly.

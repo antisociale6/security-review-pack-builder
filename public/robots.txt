@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://antisociale6.github.io/security-review-pack-builder/sitemap.xml
