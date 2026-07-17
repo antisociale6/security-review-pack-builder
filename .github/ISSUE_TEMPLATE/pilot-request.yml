@@ -11,6 +11,8 @@ body:
 
         Do not include client names, questionnaires, policies, reports, screenshots, evidence, credentials, personal data, or vulnerability details. Your GitHub username is enough for follow-up.
 
+        No files or free-text business details are requested. Choose “Prefer not to say” for any business range you do not want to publish.
+
   - type: dropdown
     id: role
     attributes:
@@ -30,6 +32,7 @@ body:
       label: Approximate number of SaaS clients supported
       description: Select a range only; do not name clients.
       options:
+        - Prefer not to say
         - 1-4
         - 5-10
         - 11-25
@@ -44,6 +47,7 @@ body:
     attributes:
       label: Security questionnaires handled per quarter
       options:
+        - Prefer not to say
         - 0-1
         - 2-4
         - 5-10
@@ -57,6 +61,7 @@ body:
     attributes:
       label: Typical staff time per questionnaire
       options:
+        - Prefer not to say
         - Under 2 hours
         - 2-5 hours
         - 6-10 hours
@@ -71,6 +76,7 @@ body:
     attributes:
       label: How important is local processing?
       options:
+        - Prefer not to say
         - Required - evidence cannot be uploaded to hosted AI
         - Strong preference
         - Useful but not required

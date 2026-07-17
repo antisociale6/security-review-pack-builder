@@ -41,8 +41,8 @@ The tool does not certify compliance, provide legal advice, prove that a
 control operates effectively, or submit a questionnaire. An authorised person
 must review every draft before it is shared.
 
-The working price hypothesis is **€499 for 12 months**. No checkout or payment
-link is enabled during the free pilot.
+The proposed post-pilot price is **€499 for 12 months**. Free pilot participants
+are not charged, and no checkout or payment link is enabled.
 
 ## Requesting a pilot safely
 
@@ -56,7 +56,8 @@ ranges. Do **not** include:
 - vulnerability details.
 
 Your GitHub username is enough for follow-up. Pilot evidence stays on your own
-machine; it is not uploaded through this repository.
+machine; it is not uploaded through this repository. Selected pilots receive a
+guided local setup only after the scope and a safe private hand-off are agreed.
 
 ## Repository scope
 
